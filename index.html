@@ -1,18 +1,405 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Registration</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #eef4ff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    h1, h2 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #334155;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #2563eb;
+    }
+
+    .phone-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-row input {
+      flex: 1;
+    }
+
+    .call-btn {
+      border: none;
+      background: #10b981;
+      color: white;
+      border-radius: 10px;
+      padding: 0 18px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .msg.success {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .msg.error {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+
+    .empty {
+      text-align: center;
+      color: #64748b;
+      padding: 20px;
+    }
+
+    .action-btn {
+      border: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin-right: 6px;
+    }
+
+    .edit-btn {
+      background: #f59e0b;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+    }
+
+    @media (max-width: 700px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="card">
+      <h1>Student Registration</h1>
 
-  <h1>Student Registration</h1>
+      <div id="message" class="msg"></div>
 
-  <form id="form">
-    <input type="text" id="name" placeholder="Name" required><br><br>
-    <input type="text" id="id" placeholder="ID" required><br><br>
-    <input type="text" id="dept" placeholder="Department" required><br><br>
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="text" id="phone" placeholder="Phone" required><br><br>
+      <form id="studentForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter full name" required />
+        </div>
 
-    <button type="submit">Register</button>
+        <div class="form-group">
+          <label for="studentId">Student ID</label>
+          <input type="text" id="studentId" placeholder="Enter student ID" required />
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select id="department" required>
+            <option value="">Select department</option>
+            <option>Computer Science</option>
+            <option>Business Administration</option>
+            <option>Electrical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>English</option>
+            <option>Mathematics</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <div class="phone-row">
+            <input type="text" id="phone" placeholder="Enter phone number" required />
+            <button type="button" class="call-btn" id="callBtn">📞</button>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Register Student</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Registered Students</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <tr>
+            <td colspan="6" class="empty">No students registered yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const studentForm = document.getElementById("studentForm");
+    const nameInput = document.getElementById("name");
+    const studentIdInput = document.getElementById("studentId");
+    const departmentInput = document.getElementById("department");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const callBtn = document.getElementById("callBtn");
+    const studentTableBody = document.getElementById("studentTableBody");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageBox = document.getElementById("message");
+
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    let editIndex = -1;
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = "msg " + type;
+      setTimeout(() => {
+        messageBox.className = "msg";
+        messageBox.textContent = "";
+      }, 2500);
+    }
+
+    function saveStudents() {
+      localStorage.setItem("students", JSON.stringify(students));
+    }
+
+    function renderStudents() {
+      studentTableBody.innerHTML = "";
+
+      if (students.length === 0) {
+        studentTableBody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty">No students registered yet.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      students.forEach((student, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${student.name}</td>
+          <td>${student.studentId}</td>
+          <td>${student.department}</td>
+          <td>${student.email}</td>
+          <td>${student.phone}</td>
+          <td>
+            <button type="button" class="action-btn edit-btn" onclick="editStudent(${index})">Edit</button>
+            <button type="button" class="action-btn delete-btn" onclick="deleteStudent(${index})">Delete</button>
+          </td>
+        `;
+        studentTableBody.appendChild(row);
+      });
+    }
+
+    function resetForm() {
+      studentForm.reset();
+      editIndex = -1;
+      submitBtn.textContent = "Register Student";
+    }
+
+    function validateEmail(email) {
+      return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    }
+
+    function validatePhone(phone) {
+      return /^[0-9+\\-\\s]{7,15}$/.test(phone);
+    }
+
+    studentForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = nameInput.value.trim();
+      const studentId = studentIdInput.value.trim();
+      const department = departmentInput.value;
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+
+      if (!name || !studentId || !department || !email || !phone) {
+        showMessage("Please fill all fields.", "error");
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showMessage("Please enter a valid email.", "error");
+        return;
+      }
+
+      if (!validatePhone(phone)) {
+        showMessage("Please enter a valid phone number.", "error");
+        return;
+      }
+
+      const duplicateIndex = students.findIndex((student, index) => {
+        return student.studentId.toLowerCase() === studentId.toLowerCase() && index !== editIndex;
+      });
+
+      if (duplicateIndex !== -1) {
+        showMessage("Student ID already exists.", "error");
+        return;
+      }
+
+      const studentData = {
+        name,
+        studentId,
+        department,
+        email,
+        phone
+      };
+
+      if (editIndex === -1) {
+        students.push(studentData);
+        showMessage("Student registered successfully.", "success");
+      } else {
+        students[editIndex] = studentData;
+        showMessage("Student updated successfully.", "success");
+      }
+
+      saveStudents();
+      renderStudents();
+      resetForm();
+    });
+
+    callBtn.addEventListener("click", function () {
+      const phone = phoneInput.value.trim();
+
+      if (!phone) {
+        showMessage("Enter phone number first.", "error");
+        return;
+      }
+
+      window.location.href = "tel:" + phone;
+    });
+
+    function editStudent(index) {
+      const student = students[index];
+      nameInput.value = student.name;
+      studentIdInput.value = student.studentId;
+      departmentInput.value = student.department;
+      emailInput.value = student.email;
+      phoneInput.value = student.phone;
+      editIndex = index;
+      submitBtn.textContent = "Update Student";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteStudent(index) {
+      const ok = confirm("Delete this student?");
+      if (!ok) return;
+
+      students.splice(index, 1);
+      saveStudents();
+      renderStudents();
+      showMessage("Student deleted.", "success");
+
+      if (editIndex === index) {
+        resetForm();
+      }
+    }
+
+    window.editStudent = editStudent;
+    window.deleteStudent = deleteStudent;
+
+    renderStudents();
+  </script>
+</body>
+</html>
