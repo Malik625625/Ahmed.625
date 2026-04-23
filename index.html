@@ -19,13 +19,19 @@ body {
 
 /* Watermark */
 .watermark {
-  position: fixed;
+position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-20deg);
   font-size: 60px;
   font-weight: bold;
-  color: rgba(0,0,0,0.05);
+
+  background: linear-gradient(45deg, red, blue, green, purple, orange);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  opacity: 0.3;
   pointer-events: none;
 }
 
